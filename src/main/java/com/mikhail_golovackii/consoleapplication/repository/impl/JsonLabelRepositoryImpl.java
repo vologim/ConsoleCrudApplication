@@ -22,14 +22,14 @@ public class JsonLabelRepositoryImpl implements LabelRepository{
     public Label create(Label elem) {
         Gson gson = new Gson();
         LinkedList<Label> labels = getAll();
-        
+
         if (labels == null){
             elem.setId(0);
         }
         else{
             elem.setId(labels.getLast().getId() + 1);
         }
-
+        
         try(FileWriter writer = new FileWriter(FILE_PATH, true)){
             gson.toJson(elem, writer);
         }
