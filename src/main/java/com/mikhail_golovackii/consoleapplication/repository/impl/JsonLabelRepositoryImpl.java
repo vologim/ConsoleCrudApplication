@@ -22,7 +22,7 @@ public class JsonLabelRepositoryImpl implements LabelRepository{
     public Label create(Label elem) {
         Gson gson = new Gson();
         LinkedList<Label> labels = getAll();
-
+        
         if (labels == null){
             elem.setId(0);
         }
