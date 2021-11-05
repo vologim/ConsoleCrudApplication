@@ -115,6 +115,7 @@ public class JsonPostRepositoryImpl implements PostRepository{
         File file = new File(FILE_PATH);
         
         if(file.length() == 0){
+            System.out.println("List posts is empty. Create new list!");
             return null;
         }
         
@@ -136,17 +137,19 @@ public class JsonPostRepositoryImpl implements PostRepository{
             System.out.println(ex.getMessage());
         }
         
-        return post;
+        System.out.println("Post not found, id: " + id);
+        return null;
     }
 
     @Override
     public LinkedList<Post> getAll() {
-        LinkedList<Post> labels = new LinkedList<>();
-        Post label = new Post();
+        LinkedList<Post> posts = new LinkedList<>();
+        Post post = new Post();
         Gson gson = new Gson();
         File emptyFile = new File(FILE_PATH);
         
         if (emptyFile.length() == 0){
+            System.out.println("List posts is empty. Create new list!");
             return null;
         }
         
@@ -154,8 +157,8 @@ public class JsonPostRepositoryImpl implements PostRepository{
             reader.setLenient(true);
 
             while (reader.peek() != JsonToken.END_DOCUMENT){
-                label = gson.fromJson(reader, Post.class);
-                labels.add(label);
+                post = gson.fromJson(reader, Post.class);
+                posts.add(post);
             }
         }
         catch (FileNotFoundException ex){
@@ -163,16 +166,17 @@ public class JsonPostRepositoryImpl implements PostRepository{
             System.out.println(ex.getMessage());
         }
         catch (IOException ex){
-            System.out.println("IOException---");
+            System.out.println("IOException");
             System.out.println(ex.getMessage());
         }
     
-        if (labels.isEmpty()){
+        if (posts.isEmpty()){
+            System.out.println("List posts is empty");
             return null;
         }
 
-        labels.sort(Comparator.comparing(Post::getId));
-        return labels;
+        posts.sort(Comparator.comparing(Post::getId));
+        return posts;
     }
 
     @Override
@@ -183,11 +187,9 @@ public class JsonPostRepositoryImpl implements PostRepository{
         Label label = repository.get(labelId);
         
         if (post == null){
-            System.out.println("Post not found, id: " + postId);
             return null;
         }
         if (label == null){
-            System.out.println("Label not found, id: " + labelId);
             return null;
         }
         
@@ -210,15 +212,22 @@ public class JsonPostRepositoryImpl implements PostRepository{
         Gson gson = new Gson();
         Post post = get(postId);
         JsonLabelRepositoryImpl repository = new JsonLabelRepositoryImpl();
-        List<Label> labels = repository.getAll();
+        Label label = new Label();
         
         if (post == null){
-            System.out.println("Post not found, id: " + postId);
             return null;
         }
 
         delete(postId);
-        post.setLabels(labels);
+        
+        for (Long i : labelsId){
+            label = repository.get(i);
+            
+            if (label == null){
+                continue;
+            }
+            post.getLabels().add(label);
+        }
         
         try (FileWriter writer = new FileWriter(FILE_PATH, true)){
             gson.toJson(post, writer);
@@ -239,11 +248,9 @@ public class JsonPostRepositoryImpl implements PostRepository{
         Label label = repository.get(labelId);
         
         if (post == null){
-            System.out.println("Post not found, id: " + postId);
             return null;
         }
         if (label == null){
-            System.out.println("Label not found, id: " + labelId);
             return null;
         }
         
@@ -267,12 +274,11 @@ public class JsonPostRepositoryImpl implements PostRepository{
         Post post = get(postId);
         
         if (post == null){
-            System.out.println("Post not found, id: " + postId);
             return null;
         }
 
         delete(postId);
-        post.setLabels(null);
+        post.setLabels(new LinkedList<>());
         
         try (FileWriter writer = new FileWriter(FILE_PATH, true)){
             gson.toJson(post, writer);
@@ -287,52 +293,56 @@ public class JsonPostRepositoryImpl implements PostRepository{
     
     @Override
     public Post update(Long id, Post elem) {
-        LinkedList<Post> labels = getAll();
+        LinkedList<Post> posts = getAll();
         Gson gson = new Gson();
-        Post label = get(id);
+        Post post = get(id);
 
-        if (label == null){
+        if (post == null){
             return null;
         }
         
-        if (labels.isEmpty()){
+        if (posts.isEmpty()){
             return null;
         }
         
-        labels.remove(label);
-        label.setName(elem.getName());
-        labels.add(label);
+        posts.remove(post);
         
-        labels.sort(Comparator.comparing(Post::getId));
+        post.setId(post.getId());
+        post.setName(elem.getName());
+        post.setContent(elem.getContent());
+        post.setLabels(elem.getLabels());
+        posts.add(post);
+        
+        posts.sort(Comparator.comparing(Post::getId));
         
         try(FileWriter writer = new FileWriter(FILE_PATH)){
-            labels.stream().forEach(e -> gson.toJson(e, writer));
+            posts.stream().forEach(e -> gson.toJson(e, writer));
         }
         catch(IOException ex){
             System.out.println("IOException");
             System.out.println(ex.getMessage());
         }
         
-        return label;
+        return post;
     }
 
     @Override
     public void delete(Long id) {
-        LinkedList<Post> labels = getAll();
-        Post label = get(id);
+        LinkedList<Post> posts = getAll();
+        Post post = get(id);
         Gson gson = new Gson();
         
-        if (label == null){
+        if (post == null){
             return;
         }
-        if (labels.isEmpty()){
+        if (posts.isEmpty()){
             return;
         }
 
-        labels.remove(label);
+        posts.remove(post);
         
         try(FileWriter writer = new FileWriter(FILE_PATH)){
-            labels.stream().forEach(elem -> gson.toJson(elem, writer));
+            posts.stream().forEach(elem -> gson.toJson(elem, writer));
         }
         catch(IOException ex){
             System.out.println("IOException");

@@ -48,6 +48,7 @@ public class JsonLabelRepositoryImpl implements LabelRepository{
         File emptyFile = new File(FILE_PATH);
         
         if (emptyFile.length() == 0){
+            System.out.println("List labels is empty. Create new list!");
             return null;
         }
         
@@ -69,7 +70,9 @@ public class JsonLabelRepositoryImpl implements LabelRepository{
             System.out.println(ex.getMessage());
         }
         
-        return label;
+        System.out.println("Label not found, id: " + id);
+
+        return null;
     }
 
     @Override
@@ -80,6 +83,7 @@ public class JsonLabelRepositoryImpl implements LabelRepository{
         File emptyFile = new File(FILE_PATH);
         
         if (emptyFile.length() == 0){
+            System.out.println("List posts is empty. Create new list!");
             return null;
         }
         
@@ -96,11 +100,12 @@ public class JsonLabelRepositoryImpl implements LabelRepository{
             System.out.println(ex.getMessage());
         }
         catch (IOException ex){
-            System.out.println("IOException---");
+            System.out.println("IOException");
             System.out.println(ex.getMessage());
         }
     
         if (labels.isEmpty()){
+            System.out.println("List labels is empty");
             return null;
         }
 

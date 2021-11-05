@@ -2,7 +2,9 @@
 package com.mikhail_golovackii.consoleapplication.model;
 
 import com.mikhail_golovackii.consoleapplication.model.Post;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class Writer {
 
@@ -13,9 +15,9 @@ public class Writer {
     public Writer() {
     }
 
-    public Writer(String name, List<Post> posts) {
+    public Writer(String name) {
         this.name = name;
-        this.posts = posts;
+        posts = new LinkedList<>();
     }
 
     public long getId() {
@@ -41,6 +43,44 @@ public class Writer {
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
+
+    @Override
+    public String toString() {
+        return "Writer{" + "id=" + id + ", name=" + name + ", posts=" + posts + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 47 * hash + Objects.hashCode(this.name);
+        hash = 47 * hash + Objects.hashCode(this.posts);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Writer other = (Writer) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name)) {
+            return false;
+        }
+        if (!Objects.equals(this.posts, other.posts)) {
+            return false;
+        }
+        return true;
+    }
+
     
-        
 }
