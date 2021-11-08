@@ -307,7 +307,6 @@ public class JsonPostRepositoryImpl implements PostRepository{
         
         posts.remove(post);
         
-        post.setId(post.getId());
         post.setName(elem.getName());
         post.setContent(elem.getContent());
         post.setLabels(elem.getLabels());
@@ -327,16 +326,16 @@ public class JsonPostRepositoryImpl implements PostRepository{
     }
 
     @Override
-    public void delete(Long id) {
+    public Post delete(Long id) {
         LinkedList<Post> posts = getAll();
         Post post = get(id);
         Gson gson = new Gson();
         
         if (post == null){
-            return;
+            return null;
         }
         if (posts.isEmpty()){
-            return;
+            return null;
         }
 
         posts.remove(post);
@@ -348,6 +347,7 @@ public class JsonPostRepositoryImpl implements PostRepository{
             System.out.println("IOException");
             System.out.println(ex.getMessage());
         }
+        return post;
     } 
     
 }

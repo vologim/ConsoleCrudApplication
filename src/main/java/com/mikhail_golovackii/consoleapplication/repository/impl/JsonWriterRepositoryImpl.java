@@ -306,7 +306,6 @@ public class JsonWriterRepositoryImpl implements WriterRepository{
         
         writers.remove(writerModel);
         
-        writerModel.setId(writerModel.getId());
         writerModel.setName(elem.getName());
         writerModel.setPosts(writerModel.getPosts());
         writers.add(writerModel);
@@ -325,16 +324,16 @@ public class JsonWriterRepositoryImpl implements WriterRepository{
     }
 
     @Override
-    public void delete(Long id) {
+    public Writer delete(Long id) {
         LinkedList<Writer> writers = getAll();
         Writer writerModel = get(id);
         Gson gson = new Gson();
         
         if (writerModel == null){
-            return;
+            return null;
         }
         if (writers.isEmpty()){
-            return;
+            return null;
         }
 
         writers.remove(writerModel);
@@ -346,6 +345,7 @@ public class JsonWriterRepositoryImpl implements WriterRepository{
             System.out.println("IOException");
             System.out.println(ex.getMessage());
         }
+        return writerModel;
     }
     
 }

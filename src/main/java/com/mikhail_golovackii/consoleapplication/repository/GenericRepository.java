@@ -13,5 +13,5 @@ public interface GenericRepository<T, ID> {
     
     T update(ID id, T elem);
     
-    void delete(ID id);
+    T delete(ID id);
 }

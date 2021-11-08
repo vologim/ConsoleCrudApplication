@@ -145,16 +145,16 @@ public class JsonLabelRepositoryImpl implements LabelRepository{
     }
 
     @Override
-    public void delete(Long id) {
+    public Label delete(Long id) {
         LinkedList<Label> labels = getAll();
         Label label = get(id);
         Gson gson = new Gson();
         
         if (label == null){
-            return;
+            return null;
         }
         if (labels.isEmpty()){
-            return;
+            return null;
         }
 
         labels.remove(label);
@@ -166,5 +166,6 @@ public class JsonLabelRepositoryImpl implements LabelRepository{
             System.out.println("IOException");
             System.out.println(ex.getMessage());
         }
+        return label;
     }
 }

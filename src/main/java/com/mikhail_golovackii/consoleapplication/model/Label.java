@@ -33,7 +33,7 @@ public class Label {
 
     @Override
     public String toString() {
-        return "Label{" + "id=" + id + ", name=" + name + '}';
+        return "\nlabel id: " + id + "\nlabel name: " + name;
     }
 
     @Override
