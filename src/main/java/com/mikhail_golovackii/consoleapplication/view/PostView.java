@@ -123,12 +123,12 @@ public class PostView {
         
         if (check.toLowerCase().equals("yes")){
             System.out.println("Post id: " + post.getId() + 
-                               "Post name: " + post.getName() +
-                               "Post content: " + post.getContent());
+                               "\nPost name: " + post.getName() +
+                               "\nPost content: " + post.getContent());
             if (!post.getLabels().isEmpty()){
                 System.out.println("Post labels:");
                 post.getLabels().forEach(elem -> System.out.println("Label id: " + elem.getId() +
-                                                                    "Label name: " + elem.getName()));
+                                                                    "\nLabel name: " + elem.getName()));
             }
             else {
                 System.out.println("Post labels: empty.");
@@ -136,8 +136,8 @@ public class PostView {
         }
         if (check.toLowerCase().equals("no")){
             System.out.println("Post id: " + post.getId() + 
-                               "Post name: " + post.getName() +
-                               "Post content: " + post.getContent());
+                               "\nPost name: " + post.getName() +
+                               "\nPost content: " + post.getContent());
         }
     }
     
@@ -149,18 +149,18 @@ public class PostView {
         }
         
         System.out.println("Show list labels?"
-                + "yes or no:");
+                + "\nyes or no:");
         String check = scanner.nextLine();
         
         if (check.toLowerCase().equals("yes")){
             posts.forEach(post -> {
                 System.out.println("Post id: " + post.getId() + 
-                               "Post name: " + post.getName() +
-                               "Post content: " + post.getContent());
+                               "\nPost name: " + post.getName() +
+                               "\nPost content: " + post.getContent());
                 if (!post.getLabels().isEmpty()){
                     System.out.println("Post labels:");
                     post.getLabels().forEach(elem -> System.out.println("Label id: " + elem.getId() +
-                                                                        "Label name: " + elem.getName()));
+                                                                        "\nLabel name: " + elem.getName()));
                 }
                 else {
                     System.out.println("Post labels: empty.");
@@ -171,8 +171,8 @@ public class PostView {
         if (check.toLowerCase().equals("no")){
             posts.forEach(post -> {
                 System.out.println("Post id: " + post.getId() + 
-                               "Post name: " + post.getName() +
-                               "Post content: " + post.getContent());
+                               "\nPost name: " + post.getName() +
+                               "\nPost content: " + post.getContent());
             });
         }
     }

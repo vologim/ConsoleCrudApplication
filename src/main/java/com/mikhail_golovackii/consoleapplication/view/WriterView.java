@@ -122,7 +122,7 @@ public class WriterView {
         
         if (check.toLowerCase().equals("yes")){
             System.out.println("Writer id: " + writer.getId() + 
-                               "Writer name: " + writer.getName());
+                               "\nWriter name: " + writer.getName());
             
             if (!writer.getPosts().isEmpty()){
                 System.out.println("Writer posts:");
@@ -150,7 +150,7 @@ public class WriterView {
         }
         
         System.out.println("Show list posts?"
-                + "yes or no:");
+                + "\nyes or no:");
         String check = scanner.nextLine();
         
         if (check.toLowerCase().equals("yes")){

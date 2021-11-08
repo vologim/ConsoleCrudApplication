@@ -32,7 +32,7 @@ public class LabelView {
             }
             
             System.out.println("Label id: " + label.getId());
-            System.out.println("Label name: " + label.getName());
+            System.out.println("\nLabel name: " + label.getName());
         }
         else {
             System.out.println("Please, enter a number.");
@@ -45,7 +45,7 @@ public class LabelView {
         
         if (labels != null){
             labels.forEach(elem -> System.out.println("Label id: " + elem.getId() + 
-                                                      "Label name: " + elem.getName() + "\n"));
+                                                      "\nLabel name: " + elem.getName() + "\n"));
         }
     }
     
