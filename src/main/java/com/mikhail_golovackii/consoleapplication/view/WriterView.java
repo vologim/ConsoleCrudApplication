@@ -15,10 +15,11 @@ public class WriterView {
     private final WriterController controller = new WriterController();
     private final PostController postController = new PostController();
     private Scanner scanner = new Scanner(System.in);
+    private String check;
     
     public void createWriter(){
-        System.out.println("Enter name post:");
-        String name = scanner.nextLine();
+        System.out.println("Enter name writer:");
+        check = scanner.next();
 
         System.out.println("Add post in writer?\n"
                 + "Enter number:\n"
@@ -29,7 +30,7 @@ public class WriterView {
         if (scanner.hasNextInt()){
             int answer = scanner.nextInt();
             long id;
-            Writer writer = new Writer(name);
+            Writer writer = new Writer(check);
             Post post;
             
             switch (answer){
@@ -65,9 +66,9 @@ public class WriterView {
                     List<Long> idPosts = new ArrayList<>();
                     System.out.println("Enter 'exit' to stop.");
                     System.out.println("Enter list id posts:");
-                    String check = scanner.nextLine();
                     
                     while (true){
+                        check = scanner.next();
                         if (check.toLowerCase().equals("exit")){
                             break;
                         }
@@ -118,7 +119,7 @@ public class WriterView {
         
         System.out.println("Show list posts?"
                 + "yes or no:");
-        String check = scanner.nextLine();
+        check = scanner.next();
         
         if (check.toLowerCase().equals("yes")){
             System.out.println("Writer id: " + writer.getId() + 
@@ -151,7 +152,7 @@ public class WriterView {
         
         System.out.println("Show list posts?"
                 + "\nyes or no:");
-        String check = scanner.nextLine();
+        check = scanner.next();
         
         if (check.toLowerCase().equals("yes")){
             writers.forEach(elem -> {
@@ -233,8 +234,8 @@ public class WriterView {
         System.out.println("Enter 'exit' to stop.");
         System.out.println("Enter list id posts:");
         
-        String check = scanner.nextLine();
         while (true){
+            check = scanner.nextLine();
             if (check.toLowerCase().equals("exit")){
                 break;
             }
@@ -333,7 +334,7 @@ public class WriterView {
         }
         
         System.out.println("Enter name:");     
-        writer.setName(scanner.nextLine());
+        writer.setName(scanner.next());
         
         controller.update(id, writer);
         System.out.println("Writer was updated.");

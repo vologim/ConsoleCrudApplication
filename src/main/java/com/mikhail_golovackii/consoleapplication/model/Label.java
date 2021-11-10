@@ -3,7 +3,7 @@ package com.mikhail_golovackii.consoleapplication.model;
 
 import java.util.Objects;
 
-public class Label {
+public class Label extends BaseModel{
     
     private long id;
     private String name;

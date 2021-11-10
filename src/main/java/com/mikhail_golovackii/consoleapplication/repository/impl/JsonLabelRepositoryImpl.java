@@ -1,49 +1,29 @@
 
 package com.mikhail_golovackii.consoleapplication.repository.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
 import com.mikhail_golovackii.consoleapplication.model.Label;
 import com.mikhail_golovackii.consoleapplication.repository.LabelRepository;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 
-public class JsonLabelRepositoryImpl implements LabelRepository{
+public class JsonLabelRepositoryImpl extends BaseClass<Label> implements LabelRepository{
 
     private final String FILE_PATH = "label.json";
     
     @Override
     public Label create(Label elem) {
-        Gson gson = new Gson();
         LinkedList<Label> labels = getAll();
         
-        if (labels == null){
-            elem.setId(0);
-        }
-        else{
-            elem.setId(labels.getLast().getId() + 1);
-        }
-        
-        try(FileWriter writer = new FileWriter(FILE_PATH, true)){
-            gson.toJson(elem, writer);
-        }
-        catch(IOException ex){
-            System.out.println("IOException");
-            System.out.println(ex.getMessage());
-        }
+        elem.setId(generatedId(labels));
+        writeInBase(elem, FILE_PATH);
         
         return elem;
     }
 
     @Override
     public Label get(Long id) {
-        Gson gson = new Gson();
         Label label = new Label();
         File emptyFile = new File(FILE_PATH);
         
@@ -51,35 +31,19 @@ public class JsonLabelRepositoryImpl implements LabelRepository{
             System.out.println("List labels is empty. Create new list!");
             return null;
         }
-        
-        try (JsonReader reader = new JsonReader(new FileReader(FILE_PATH))){
-            reader.setLenient(true);
-            while (reader.peek() != JsonToken.END_DOCUMENT){
-                label = gson.fromJson(reader, Label.class);
-                if (label.getId() == id){
-                    return label;
-                }
-            }
-        }
-        catch (FileNotFoundException ex){
-            System.out.println("File not found");
-            System.out.println(ex.getMessage());
-        }
-        catch (IOException ex){
-            System.out.println("IOException");
-            System.out.println(ex.getMessage());
+
+        if ((label = getFromBases(id, FILE_PATH, label)) != null){
+            return label;
         }
         
         System.out.println("Label not found, id: " + id);
-
+        
         return null;
     }
 
     @Override
     public LinkedList<Label> getAll() {
         LinkedList<Label> labels = new LinkedList<>();
-        Label label = new Label();
-        Gson gson = new Gson();
         File emptyFile = new File(FILE_PATH);
         
         if (emptyFile.length() == 0){
@@ -87,36 +51,21 @@ public class JsonLabelRepositoryImpl implements LabelRepository{
             return null;
         }
         
-        try (JsonReader reader = new JsonReader(new FileReader(FILE_PATH))){
-            reader.setLenient(true);
+        labels = getAllFromBases(FILE_PATH, new Label());
 
-            while (reader.peek() != JsonToken.END_DOCUMENT){
-                label = gson.fromJson(reader, Label.class);
-                labels.add(label);
-            }
-        }
-        catch (FileNotFoundException ex){
-            System.out.println("File not found");
-            System.out.println(ex.getMessage());
-        }
-        catch (IOException ex){
-            System.out.println("IOException");
-            System.out.println(ex.getMessage());
-        }
-    
         if (labels.isEmpty()){
             System.out.println("List labels is empty");
             return null;
         }
 
         labels.sort(Comparator.comparing(Label::getId));
+        
         return labels;
     }    
 
     @Override
     public Label update(Long id, Label elem) {
         LinkedList<Label> labels = getAll();
-        Gson gson = new Gson();
         Label label = get(id);
 
         if (label == null){
@@ -133,13 +82,7 @@ public class JsonLabelRepositoryImpl implements LabelRepository{
         
         labels.sort(Comparator.comparing(Label::getId));
         
-        try(FileWriter writer = new FileWriter(FILE_PATH)){
-            labels.stream().forEach(e -> gson.toJson(e, writer));
-        }
-        catch(IOException ex){
-            System.out.println("IOException");
-            System.out.println(ex.getMessage());
-        }
+        writerListInBase(labels, FILE_PATH);
         
         return label;
     }
@@ -148,7 +91,6 @@ public class JsonLabelRepositoryImpl implements LabelRepository{
     public Label delete(Long id) {
         LinkedList<Label> labels = getAll();
         Label label = get(id);
-        Gson gson = new Gson();
         
         if (label == null){
             return null;
@@ -158,14 +100,34 @@ public class JsonLabelRepositoryImpl implements LabelRepository{
         }
 
         labels.remove(label);
+        writerListInBase(labels, FILE_PATH);
         
-        try(FileWriter writer = new FileWriter(FILE_PATH)){
-            labels.stream().forEach(elem -> gson.toJson(elem, writer));
-        }
-        catch(IOException ex){
-            System.out.println("IOException");
-            System.out.println(ex.getMessage());
-        }
         return label;
     }
+ 
+    @Override
+    public Long generatedId(LinkedList<Label> list) {
+        return super.generatedId(list);
+    }
+
+    @Override
+    public Label getFromBases(Long id, String filePath, Label obj) {
+        return super.getFromBases(id, filePath, obj);
+    }
+
+    @Override
+    public LinkedList<Label> getAllFromBases(String filePath, Label obj) {
+        return super.getAllFromBases(filePath, obj);
+    }
+
+    @Override
+    public void writeInBase(Label obj, String filePath) {
+        super.writeInBase(obj, filePath);
+    }
+
+    @Override
+    public void writerListInBase(List<Label> list, String filePath) {
+        super.writerListInBase(list, filePath);
+    }
+
 }

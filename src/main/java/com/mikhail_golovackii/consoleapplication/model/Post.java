@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class Post {
+public class Post extends BaseModel {
 
     private long id;
     private String name;

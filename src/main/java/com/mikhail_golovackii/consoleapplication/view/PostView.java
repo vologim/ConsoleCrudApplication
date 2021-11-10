@@ -15,12 +15,14 @@ public class PostView {
     private final PostController controller = new PostController();
     private final LabelController labelController = new LabelController();
     private Scanner scanner = new Scanner(System.in);
+    private String check;
     
     public void createPost(){
         System.out.println("Enter name post:");
-        String name = scanner.nextLine();
+        String name = scanner.next();
         System.out.println("Enter content post:");
-        String content = scanner.nextLine();
+        String content = scanner.next();
+        boolean flag = true;
 
         System.out.println("Add label in post?\n"
                 + "Enter number:\n"
@@ -67,11 +69,13 @@ public class PostView {
                     List<Long> idList = new ArrayList<>();
                     System.out.println("Enter 'exit' to stop.");
                     System.out.println("Enter list id labels:");
-                    String check = scanner.nextLine();
+                    String check;
                     
-                    while (true){
+                    while (flag){
+                        check = scanner.next();
                         if (check.toLowerCase().equals("exit")){
-                            break;
+                            flag = false;
+                            continue;
                         }
 
                         if (scanner.hasNextLong()){
@@ -119,7 +123,7 @@ public class PostView {
         
         System.out.println("Show list labels?"
                 + "yes or no:");
-        String check = scanner.nextLine();
+        check = scanner.next();
         
         if (check.toLowerCase().equals("yes")){
             System.out.println("Post id: " + post.getId() + 
@@ -150,7 +154,7 @@ public class PostView {
         
         System.out.println("Show list labels?"
                 + "\nyes or no:");
-        String check = scanner.nextLine();
+        check = scanner.next();
         
         if (check.toLowerCase().equals("yes")){
             posts.forEach(post -> {
@@ -232,8 +236,9 @@ public class PostView {
         System.out.println("Enter 'exit' to stop.");
         System.out.println("Enter list id labels:");
         
-        String check = scanner.nextLine();
+        
         while (true){
+            check = scanner.next();
             if (check.toLowerCase().equals("exit")){
                 break;
             }
@@ -332,9 +337,9 @@ public class PostView {
         }
         
         System.out.println("Enter name:");     
-        post.setName(scanner.nextLine());
+        post.setName(scanner.next());
         System.out.println("Enter content:");
-        post.setContent(scanner.nextLine());
+        post.setContent(scanner.next());
         
         controller.update(id, post);
         System.out.println("Post was updated.");

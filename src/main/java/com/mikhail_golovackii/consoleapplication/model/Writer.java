@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class Writer {
+public class Writer extends BaseModel {
 
     private long id;
     private String name;

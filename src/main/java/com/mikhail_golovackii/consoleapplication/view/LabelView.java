@@ -10,12 +10,13 @@ public class LabelView {
     
     private final LabelController controller = new LabelController();
     private Scanner scanner = new Scanner(System.in);
+    private String check;
     
     public void createLabel(){
         System.out.println("Enter name label:");
-        String name = scanner.nextLine();
+        check = scanner.next();
         
-        Label label = new Label(name);
+        Label label = new Label(check);
         controller.create(label);
         
         System.out.println("Label created.");
@@ -58,8 +59,8 @@ public class LabelView {
             
             if (label != null){
                 System.out.println("Enter name lable:");
-                String name = scanner.nextLine();
-                label.setName(name);
+                check = scanner.next();
+                label.setName(check);
                 controller.update(id, label);
             }
         }
@@ -82,7 +83,7 @@ public class LabelView {
                 System.out.println("name: " + label.getName());
                 System.out.println("Enter yes/no:");
                 
-                String check = scanner.nextLine();
+                check = scanner.next();
                 
                 switch (check.toLowerCase()){
                     case "yes":
