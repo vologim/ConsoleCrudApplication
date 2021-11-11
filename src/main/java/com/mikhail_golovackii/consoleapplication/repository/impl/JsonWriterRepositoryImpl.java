@@ -1,17 +1,10 @@
 
 package com.mikhail_golovackii.consoleapplication.repository.impl;
 
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
 import com.mikhail_golovackii.consoleapplication.model.Post;
 import com.mikhail_golovackii.consoleapplication.model.Writer;
 import com.mikhail_golovackii.consoleapplication.repository.WriterRepository;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,7 +73,7 @@ public class JsonWriterRepositoryImpl extends BaseClass<Writer> implements Write
             return null;
         }
         
-        if ((writer = getFromBases(id, FILE_PATH, writer)) != null){
+        if ((writer = getObjFromBase(id, FILE_PATH, writer)) != null){
             return writer;
         }
         
@@ -98,7 +91,7 @@ public class JsonWriterRepositoryImpl extends BaseClass<Writer> implements Write
             return null;
         }
         
-        writers = getAllFromBases(FILE_PATH, new Writer());
+        writers = getAllObjFromBase(FILE_PATH, new Writer());
     
         if (writers.isEmpty()){
             System.out.println("List writers is empty");
@@ -209,7 +202,7 @@ public class JsonWriterRepositoryImpl extends BaseClass<Writer> implements Write
         writers.add(writerModel);
         writers.sort(Comparator.comparing(Writer::getId));
         
-        writerListInBase(writers, FILE_PATH);
+        writeListInBase(writers, FILE_PATH);
         
         return writerModel;
     }
@@ -228,7 +221,7 @@ public class JsonWriterRepositoryImpl extends BaseClass<Writer> implements Write
 
         writers.remove(writerModel);
         
-        writerListInBase(writers, FILE_PATH);
+        writeListInBase(writers, FILE_PATH);
         
         return writerModel;
     }
@@ -239,13 +232,13 @@ public class JsonWriterRepositoryImpl extends BaseClass<Writer> implements Write
     }
 
     @Override
-    public Writer getFromBases(Long id, String filePath, Writer obj) {
-        return super.getFromBases(id, filePath, obj);
+    public Writer getObjFromBase(Long id, String filePath, Writer obj) {
+        return super.getObjFromBase(id, filePath, obj);
     }
 
     @Override
-    public LinkedList<Writer> getAllFromBases(String filePath, Writer obj) {
-        return super.getAllFromBases(filePath, obj);
+    public LinkedList<Writer> getAllObjFromBase(String filePath, Writer obj) {
+        return super.getAllObjFromBase(filePath, obj);
     }
 
     @Override
@@ -254,7 +247,7 @@ public class JsonWriterRepositoryImpl extends BaseClass<Writer> implements Write
     }
 
     @Override
-    public void writerListInBase(List<Writer> list, String filePath) {
-        super.writerListInBase(list, filePath);
+    public void writeListInBase(List<Writer> list, String filePath) {
+        super.writeListInBase(list, filePath);
     }
 }

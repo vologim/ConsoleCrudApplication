@@ -32,7 +32,7 @@ public class JsonLabelRepositoryImpl extends BaseClass<Label> implements LabelRe
             return null;
         }
 
-        if ((label = getFromBases(id, FILE_PATH, label)) != null){
+        if ((label = getObjFromBase(id, FILE_PATH, label)) != null){
             return label;
         }
         
@@ -51,7 +51,7 @@ public class JsonLabelRepositoryImpl extends BaseClass<Label> implements LabelRe
             return null;
         }
         
-        labels = getAllFromBases(FILE_PATH, new Label());
+        labels = getAllObjFromBase(FILE_PATH, new Label());
 
         if (labels.isEmpty()){
             System.out.println("List labels is empty");
@@ -75,14 +75,12 @@ public class JsonLabelRepositoryImpl extends BaseClass<Label> implements LabelRe
         if (labels.isEmpty()){
             return null;
         }
-        
+
         labels.remove(label);
         label.setName(elem.getName());
         labels.add(label);
         
-        labels.sort(Comparator.comparing(Label::getId));
-        
-        writerListInBase(labels, FILE_PATH);
+        writeListInBase(labels, FILE_PATH);
         
         return label;
     }
@@ -100,7 +98,7 @@ public class JsonLabelRepositoryImpl extends BaseClass<Label> implements LabelRe
         }
 
         labels.remove(label);
-        writerListInBase(labels, FILE_PATH);
+        writeListInBase(labels, FILE_PATH);
         
         return label;
     }
@@ -111,13 +109,13 @@ public class JsonLabelRepositoryImpl extends BaseClass<Label> implements LabelRe
     }
 
     @Override
-    public Label getFromBases(Long id, String filePath, Label obj) {
-        return super.getFromBases(id, filePath, obj);
+    public Label getObjFromBase(Long id, String filePath, Label obj) {
+        return super.getObjFromBase(id, filePath, obj);
     }
 
     @Override
-    public LinkedList<Label> getAllFromBases(String filePath, Label obj) {
-        return super.getAllFromBases(filePath, obj);
+    public LinkedList<Label> getAllObjFromBase(String filePath, Label obj) {
+        return super.getAllObjFromBase(filePath, obj);
     }
 
     @Override
@@ -126,8 +124,8 @@ public class JsonLabelRepositoryImpl extends BaseClass<Label> implements LabelRe
     }
 
     @Override
-    public void writerListInBase(List<Label> list, String filePath) {
-        super.writerListInBase(list, filePath);
+    public void writeListInBase(List<Label> list, String filePath) {
+        super.writeListInBase(list, filePath);
     }
 
 }

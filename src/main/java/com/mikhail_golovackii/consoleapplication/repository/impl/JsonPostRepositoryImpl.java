@@ -73,7 +73,7 @@ public class JsonPostRepositoryImpl extends BaseClass<Post> implements PostRepos
             return null;
         }
 
-        if ((post = getFromBases(id, FILE_PATH, post)) != null){
+        if ((post = getObjFromBase(id, FILE_PATH, post)) != null){
             return post;
         }
         
@@ -91,7 +91,7 @@ public class JsonPostRepositoryImpl extends BaseClass<Post> implements PostRepos
             return null;
         }
             
-        posts = getAllFromBases(FILE_PATH, new Post());
+        posts = getAllObjFromBase(FILE_PATH, new Post());
         
         if (posts.isEmpty()){
             System.out.println("List posts is empty");
@@ -205,7 +205,7 @@ public class JsonPostRepositoryImpl extends BaseClass<Post> implements PostRepos
         
         posts.sort(Comparator.comparing(Post::getId));
         
-        writerListInBase(posts, FILE_PATH);
+        writeListInBase(posts, FILE_PATH);
         
         return post;
     }
@@ -224,7 +224,7 @@ public class JsonPostRepositoryImpl extends BaseClass<Post> implements PostRepos
 
         posts.remove(post);
         
-        writerListInBase(posts, FILE_PATH);
+        writeListInBase(posts, FILE_PATH);
         return post;
     } 
 
@@ -234,13 +234,13 @@ public class JsonPostRepositoryImpl extends BaseClass<Post> implements PostRepos
     }
 
     @Override
-    public Post getFromBases(Long id, String filePath, Post obj) {
-        return super.getFromBases(id, filePath, obj);
+    public Post getObjFromBase(Long id, String filePath, Post obj) {
+        return super.getObjFromBase(id, filePath, obj);
     }
 
     @Override
-    public LinkedList<Post> getAllFromBases(String filePath, Post obj) {
-        return super.getAllFromBases(filePath, obj);
+    public LinkedList<Post> getAllObjFromBase(String filePath, Post obj) {
+        return super.getAllObjFromBase(filePath, obj);
     }
 
     @Override
@@ -249,8 +249,8 @@ public class JsonPostRepositoryImpl extends BaseClass<Post> implements PostRepos
     }
 
     @Override
-    public void writerListInBase(List<Post> list, String filePath) {
-        super.writerListInBase(list, filePath);
+    public void writeListInBase(List<Post> list, String filePath) {
+        super.writeListInBase(list, filePath);
     }
     
     
