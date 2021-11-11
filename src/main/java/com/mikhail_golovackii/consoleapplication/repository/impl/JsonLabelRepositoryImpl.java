@@ -66,41 +66,42 @@ public class JsonLabelRepositoryImpl extends BaseClass<Label> implements LabelRe
     @Override
     public Label update(Long id, Label elem) {
         LinkedList<Label> labels = getAll();
-        Label label = get(id);
 
-        if (label == null){
-            return null;
-        }
-        
         if (labels.isEmpty()){
             return null;
         }
 
-        labels.remove(label);
-        label.setName(elem.getName());
-        labels.add(label);
+        Label label = get(id);
         
-        writeListInBase(labels, FILE_PATH);
+        if (labels.removeIf(i -> i.getId() == id)){
+            
+            label.setName(elem.getName());
+            labels.add(label);
         
-        return label;
+            writeListInBase(labels, FILE_PATH);
+            
+            return label;
+        }
+        
+        return null;
     }
 
     @Override
     public Label delete(Long id) {
         LinkedList<Label> labels = getAll();
-        Label label = get(id);
         
-        if (label == null){
-            return null;
-        }
         if (labels.isEmpty()){
             return null;
         }
-
-        labels.remove(label);
-        writeListInBase(labels, FILE_PATH);
         
-        return label;
+        Label label = get(id);
+
+        if (labels.removeIf(i -> i.getId() == id)){
+            writeListInBase(labels, FILE_PATH);
+            return label;
+        }
+        
+        return null;
     }
  
     @Override

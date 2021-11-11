@@ -44,7 +44,7 @@ public class JsonPostRepositoryImpl extends BaseClass<Post> implements PostRepos
     @Override
     public Post create(Post elem, List<Long> labelsId) {
         LinkedList<Post> posts = getAll();
-        Label label = new Label();
+        Label label;
         
         elem.setId(generatedId(posts));
 
@@ -83,7 +83,7 @@ public class JsonPostRepositoryImpl extends BaseClass<Post> implements PostRepos
 
     @Override
     public LinkedList<Post> getAll() {
-        LinkedList<Post> posts = new LinkedList<>();
+        LinkedList<Post> posts;
         File emptyFile = new File(FILE_PATH);
         
         if (emptyFile.length() == 0){
@@ -125,7 +125,7 @@ public class JsonPostRepositoryImpl extends BaseClass<Post> implements PostRepos
     @Override
     public Post addLabels(Long postId, List<Long> labelsId) {
         Post post = get(postId);
-        Label label = new Label();
+        Label label;
         
         if (post == null){
             return null;
@@ -186,46 +186,44 @@ public class JsonPostRepositoryImpl extends BaseClass<Post> implements PostRepos
     @Override
     public Post update(Long id, Post elem) {
         LinkedList<Post> posts = getAll();
-        Post post = get(id);
-
-        if (post == null){
-            return null;
-        }
         
         if (posts.isEmpty()){
             return null;
         }
         
-        posts.remove(post);
-        
-        post.setName(elem.getName());
-        post.setContent(elem.getContent());
-        post.setLabels(elem.getLabels());
-        posts.add(post);
-        
-        posts.sort(Comparator.comparing(Post::getId));
-        
-        writeListInBase(posts, FILE_PATH);
-        
-        return post;
+        Post post = get(id);
+
+        if (posts.removeIf(i -> i.getId() == id)){
+            
+            post.setName(elem.getName());
+            post.setContent(elem.getContent());
+            post.setLabels(elem.getLabels());
+            posts.add(post);
+            
+            writeListInBase(posts, FILE_PATH);
+            return post;
+        }
+
+        return null;
     }
 
     @Override
     public Post delete(Long id) {
         LinkedList<Post> posts = getAll();
-        Post post = get(id);
-        
-        if (post == null){
-            return null;
-        }
+
         if (posts.isEmpty()){
             return null;
         }
-
-        posts.remove(post);
         
-        writeListInBase(posts, FILE_PATH);
-        return post;
+        Post post = get(id);
+        
+        if (posts.removeIf(i -> i.getId() == id)){
+            
+            writeListInBase(posts, FILE_PATH);
+            return post;
+        }
+        
+        return null;
     } 
 
     @Override

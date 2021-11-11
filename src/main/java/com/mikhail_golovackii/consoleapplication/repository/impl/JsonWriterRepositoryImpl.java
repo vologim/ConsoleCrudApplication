@@ -19,7 +19,6 @@ public class JsonWriterRepositoryImpl extends BaseClass<Writer> implements Write
         LinkedList<Writer> writers = getAll();
 
         elem.setId(generatedId(writers));
-        
         writeInBase(elem, FILE_PATH);
         
         return elem;
@@ -45,7 +44,7 @@ public class JsonWriterRepositoryImpl extends BaseClass<Writer> implements Write
     @Override
     public Writer create(Writer elem, List<Long> postsId) {
         LinkedList<Writer> writers = getAll();
-        Post post = new Post();
+        Post post;
         
         elem.setId(generatedId(writers));
 
@@ -83,7 +82,7 @@ public class JsonWriterRepositoryImpl extends BaseClass<Writer> implements Write
 
     @Override
     public LinkedList<Writer> getAll() {
-        LinkedList<Writer> writers = new LinkedList<>();
+        LinkedList<Writer> writers;
         File emptyFile = new File(FILE_PATH);
         
         if (emptyFile.length() == 0){
@@ -104,7 +103,7 @@ public class JsonWriterRepositoryImpl extends BaseClass<Writer> implements Write
 
     @Override
     public Writer addPost(Long writerId, Long postId) {
-        Writer writerModel = get(writerId);;
+        Writer writerModel = get(writerId);
         Post post = repository.get(postId);
         
         if (writerModel == null){
@@ -125,7 +124,7 @@ public class JsonWriterRepositoryImpl extends BaseClass<Writer> implements Write
     @Override
     public Writer addPosts(Long writerId, List<Long> postsId) {
         Writer writerModel = get(writerId);
-        Post post = new Post();
+        Post post;
         
         if (writerModel == null){
             return null;
@@ -186,44 +185,45 @@ public class JsonWriterRepositoryImpl extends BaseClass<Writer> implements Write
     @Override
     public Writer update(Long id, Writer elem) {
         LinkedList<Writer> writers = getAll();
-        Writer writerModel = get(id);
 
-        if (writerModel == null){
-            return null;
-        }
-        
         if (writers.isEmpty()){
             return null;
         }
         
-        writers.remove(writerModel);
-        writerModel.setName(elem.getName());
-        writerModel.setPosts(writerModel.getPosts());
-        writers.add(writerModel);
-        writers.sort(Comparator.comparing(Writer::getId));
+        Writer writerModel = get(id);
+
+        if (writers.removeIf(i -> i.getId() == id)){
+            
+            writerModel.setName(elem.getName());
+            writerModel.setPosts(writerModel.getPosts());
+            writers.add(writerModel);
+            
+            writeListInBase(writers, FILE_PATH);
         
-        writeListInBase(writers, FILE_PATH);
+            return writerModel;
+        }
         
-        return writerModel;
+        return null;
     }
 
     @Override
     public Writer delete(Long id) {
         LinkedList<Writer> writers = getAll();
-        Writer writerModel = get(id);
-        
-        if (writerModel == null){
-            return null;
-        }
+
         if (writers.isEmpty()){
             return null;
         }
+        
+        Writer writerModel = get(id);
+        
+        if (writers.removeIf(i -> i.getId() == id)){
+            
+            writeListInBase(writers, FILE_PATH);
+        
+            return writerModel;
+        }
 
-        writers.remove(writerModel);
-        
-        writeListInBase(writers, FILE_PATH);
-        
-        return writerModel;
+        return null;
     }
 
     @Override
